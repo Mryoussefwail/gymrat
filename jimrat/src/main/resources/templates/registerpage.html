@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GYM RAT</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+  <style>
+    .form_container {
+  max-width: 680px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.heading_container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input--style-4 {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.radio-container {
+  margin-right: 20px;
+}
+
+.select2-container {
+  width: 100%;
+}
+
+.select-dropdown {
+  margin-top: 10px;
+}
+
+button{
+	color:blue;
+	border:none;
+	height:40px;
+	width: 100px;
+	border-radius:7px;
+	cursor: pointer;
+}
+button:hover{
+	color:white;
+	background-color: #3b82f6;
+	box-shadow: 0 0 0 5px #3b83f65f;
+}
+  </style>
+</head>
+<body>
+<div class="form_container" style="margin-top:3rem;">
+  <div class="heading_container">
+    <h2>
+      Registration Form
+    </h2>
+  </div>
+  <div class="wrapper wrapper--w680">
+    <div class="card card-4">
+      <div class="card-body">
+
+        <form method="POST" action="/register">
+
+                <label class="label">Name</label>
+                <input class="form-control" type="text" id="name" name="name">
+                <label class="label">Email</label>
+                <input class="form-control" type="text"id="email" name="email">
+                <label class="label">Phone</label>
+                <input class="form-control" type="text" id="phone" name="phone">
+
+
+                <label class="label">Gender</label>
+                <div class="">
+                  <label name="male" class="">Male
+                    <input type="radio"  checked="checked" name="male" value="male">
+                    <span class="checkmark"></span>
+                  </label>
+                  <label name="female" class="">Female
+                    <input type="radio" name="female" value="female">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+
+                <label class="label">Password</label>
+                <input class="form-control" type="password"id="password" name="password">
+
+            <label class="label">Type</label>
+            <div class="">
+              <select name="subject" tabindex="-1" id="type" class="browser-default custom-select" aria-hidden="true">
+                <option disabled="disabled" selected="selected">Choose type</option>
+                <option>coach</option>
+                <option>trainer</option>
+              </select>
+              <div class="select-dropdown"></div>
+            </div>
+
+          <div class="p-t-15">
+            <button  type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+   const maleRadio = document.querySelector('input[name="male"]');
+    const femaleRadio = document.querySelector('input[name="female"]');
+
+    // Add event listeners to both radio buttons
+    maleRadio.addEventListener('change', function() {
+        // If the male radio button is checked, uncheck the female radio button
+        if (maleRadio.checked) {
+            femaleRadio.checked = false;
+        }
+    });
+
+    femaleRadio.addEventListener('change', function() {
+        // If the female radio button is checked, uncheck the male radio button
+        if (femaleRadio.checked) {
+            maleRadio.checked = false;
+        }
+    });
+    // Wait for the DOM to be fully loaded before accessing elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the form element
+        const form = document.querySelector('form');
+
+        // Add event listener to the form for the 'submit' event
+        form.addEventListener('submit', function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const gender = document.querySelector('input[type="radio"]:checked').value;
+            const type = document.getElementById('type').value;
+
+            // Construct the JSON data
+            const formData = {
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+                gender: gender,
+                type: type
+            };
+
+            // Configure the request options
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            };
+
+            // Construct the URL with query parameter
+            const url = `/register?type=${type}`;
+
+            // Make the fetch request
+            fetch(url, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful response
+                    console.log('Success:', data);
+                })
+                .catch(error => {
+                    // Handle error
+                    console.log('Error:', error);
+                });
+
+
+            window.location.href = '/login';
+        });
+    });
+</script>
+</body>
+</html>

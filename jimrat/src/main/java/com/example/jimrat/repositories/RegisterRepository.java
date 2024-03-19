@@ -16,11 +16,11 @@ public class RegisterRepository {
         this.jdbc=jdbcTemplate;
     }
     public void registerNewCoach(User coach){
-        String sql="insert into gymrat.coach values (NULL, ?, ?, ?, ?, ?, ?, NULL)";
+        String sql="insert into gymrat.coach values (NULL, ?, ?, ?, ?, ?, ?, NULL,NULL)";
         jdbc.update(sql,coach.getName(),coach.getEmail(),coach.getPassword(),coach.getPhone(),coach.getGender(),"coach");
     }
     public void registerNewTrainer(User trainer){
-        String sql="insert into gymrat.trainer values (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL)";
+        String sql="insert into gymrat.trainer values (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL,NULL)";
         jdbc.update(sql,trainer.getName(),trainer.getEmail(),trainer.getPassword(),trainer.getPhone(),trainer.getGender(),"trainer");
     }
 

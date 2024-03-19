@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+
+</head>
+<body>
+<!-- header section strats -->
+<header class="header_section">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                    <ul class="navbar-nav  ">
+
+                    </ul>
+                    <div class="user_option">
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<div class="heading_container">
+    <h2>
+        GYM RAT
+    </h2>
+</div>
+<section class=" slider_section position-relative">
+
+
+    <!-- Login Form -->
+    <form id="loginForm"  method="post" class="container center_div" >
+        <div class="form-group">
+            <label class="form-label" for="email">Email:</label>
+            <input type="email" id="email" name="email" required class="form-control form-control-lg">
+            <div id="emailError" class="error-message"></div>
+        </div>
+        <div class="form-outline mb-4">
+            <label for="password" class="form-label">Password:</label>
+            <input class="form-control form-control-lg" type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" id="button" class="btn btn-primary btn-block">Login</button>
+        <div class="col">
+            <!-- Simple link -->
+            <a href="/register">Register</a>
+        </div>
+    </form>
+
+</div>
+</section>
+<script>
+
+
+    // Assuming you have a button with id "button"
+    const button = document.getElementById('button');
+
+    button.addEventListener("click", function() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                alert("Wrong Email or password ");
+                return response.text();
+            })
+            .then(data => {
+                // Request successful, handle response
+                console.log(data);
+            })
+            .catch(error => {
+                // Request failed, handle error
+                console.error('Fetch error:', error);
+            });
+    });
+
+
+
+</script>
+
+</body>
+</html>

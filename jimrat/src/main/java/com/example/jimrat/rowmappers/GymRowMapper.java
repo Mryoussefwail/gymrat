@@ -17,7 +17,7 @@ public class GymRowMapper implements RowMapper {
         gym.setName(rs.getString("GymName"));
         gym.setLatitude(rs.getDouble("Latitude"));
         gym.setLongitude(rs.getDouble("Longitude"));
-
+        gym.setImageId(rs.getInt("ImageID"));
         return gym;
     }
 }

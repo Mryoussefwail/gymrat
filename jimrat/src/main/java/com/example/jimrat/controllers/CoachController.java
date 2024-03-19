@@ -15,10 +15,7 @@ public class CoachController {
     public CoachController(CoachRepository coachRepository){
         this.coachRepository=coachRepository;
     }
-    @GetMapping
-    public List<Trainer> getAllSubsTrainers(@RequestBody LoggedUserManagmentService loggedUserManagmentService){
-        return coachRepository.getAllSupsTrainers(loggedUserManagmentService);
-    }
+
     @PostMapping
     public void registerInGym(@RequestBody LoggedUserManagmentService loggedUserManagmentService,@RequestParam String gymname){
         coachRepository.registerInGym((int) loggedUserManagmentService.getId(),gymname);

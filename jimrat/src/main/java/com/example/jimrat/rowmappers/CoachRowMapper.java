@@ -18,6 +18,7 @@ public class CoachRowMapper implements RowMapper {
         coach.setGender(rs.getString("Gender"));
         coach.setType(rs.getString("Type"));
         coach.setGymID(rs.getInt("GymID"));
+        coach.setImageId(rs.getInt("ImageID"));
         return coach;
     }
 }

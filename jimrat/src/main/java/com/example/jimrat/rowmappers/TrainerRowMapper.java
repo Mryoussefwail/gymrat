@@ -19,6 +19,7 @@ public class TrainerRowMapper implements RowMapper {
         trainer.setType(rs.getString("Type"));
         trainer.setCoach(rs.getInt("CoachID"));
         trainer.setGym(rs.getInt("GymID"));
+        trainer.setImageId(rs.getInt("ImageID"));
         return trainer;
     }
 }

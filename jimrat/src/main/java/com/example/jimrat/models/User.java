@@ -8,6 +8,15 @@ public class User {
     private String password;
     private String gender;
     private String type;
+    private int imageId;
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
 
     public String getType() {
         return type;
@@ -25,6 +34,7 @@ public class User {
         this.password = "password";
         this.gender = "gender";
         this.type="";
+
     }
 
     public User(String name, String phone, String email, String password, String gender) {

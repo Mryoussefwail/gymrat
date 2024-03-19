@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>GYM RAT</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+</head>
+
+<body style="height:200rem">
+
+<header class="header_section" style="height:4rem">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container ">
+      <a class="navbar-brand" href="">
+            <span>
+              GYM RAT
+            </span>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+          <ul class="navbar-nav  ">
+            <li class="nav-item ">
+              <a class="nav-link" href="/hometrainer">Coaches</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/trainergyms"> Gyms  </a>
+            </li>
+
+            <li class="nav-item active" >
+              <a class="nav-link" href="/profile"> Profile  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/logout"> Logout</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="trainer_section layout_padding" style="height:250rem">
+  <div class="heading_container">
+    <h2>
+      <span th:text="${User.name}"></span>
+    </h2>
+  </div>
+  <div class="heading_container">
+    <h2>
+      <span th:text="${User.type}"></span>
+    </h2>
+  </div>
+
+  <div class="heading_container">
+    <div class="img-box">
+      <img th:if="${dataurl != null}" th:src="'data:image/jpeg;base64,' + ${dataurl}" alt="image">
+
+    </div>
+  </div>
+
+  <div class="heading_container">
+    <div class="img-box">
+      <h2 >
+        subscription with coach
+      </h2>
+    </div>
+  </div>
+  <div class="heading_container">
+    <div class="img-box">
+      <h2>
+        <span th:text="${coach?.name}"></span>
+      </h2>
+    </div>
+  </div>
+  <button id="uploadButton" class="btn btn-primary btn-block " style="margin-left:43%; width:10rem;">Upload Image</button>
+  <input type="file" id="fileInput" style="display:none;">
+</section>
+
+<script>
+
+  document.getElementById('uploadButton').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+});
+
+document.getElementById('fileInput').addEventListener('change', function() {
+    var file = this.files[0];
+    var formData = new FormData();
+    formData.append('file', file);
+
+    // Send AJAX request to the controller
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/profile', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Request was successful
+            console.log('Image uploaded successfully');
+        } else {
+            // Request failed
+            console.error('Error uploading image');
+        }
+    };
+    xhr.send(formData);
+    setTimeout(function() {
+    window.location.href = '/profile';
+    console.log("Two seconds have passed!");
+}, 2000);
+
+});
+</script>
+</body>
+</html>

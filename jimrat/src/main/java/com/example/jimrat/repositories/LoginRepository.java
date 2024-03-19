@@ -13,13 +13,11 @@ import java.util.List;
 public class LoginRepository {
     LoginCountService loginCountService;
     UserRepository userRepository;
-    LoggedUserManagmentService loggedUserManagmentService;
     JdbcTemplate jdbc;
 
-    public LoginRepository(JdbcTemplate jdbc,LoggedUserManagmentService loggedUserManagmentService,LoginCountService loginCountService,UserRepository userRepository){
+    public LoginRepository(JdbcTemplate jdbc,LoginCountService loginCountService,UserRepository userRepository){
         this.jdbc=jdbc;
         this.loginCountService=loginCountService;
-        this.loggedUserManagmentService=loggedUserManagmentService;
         this.userRepository=userRepository;
     }
 
@@ -31,10 +29,7 @@ public class LoginRepository {
             return null;
         }
         if(user.getPassword().equals(password)){
-            loggedUserManagmentService.setEmail(email);
-            loggedUserManagmentService.setId(user.getId());
-            loggedUserManagmentService.setType(user.getType());
-            loginCountService.increment();
+
             return user;
         }
         else {

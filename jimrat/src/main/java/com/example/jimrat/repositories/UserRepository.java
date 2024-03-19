@@ -28,16 +28,16 @@ public class UserRepository {
         return jdbc.query(sql,new TrainerRowMapper());
     }
     public User getUserByEmail(String email){
-        String sql="select * from gymrat.trainer where email = ?";
-        List<User> user=  jdbc.query(sql,new TrainerRowMapper(),email);
-        if(user.size() ==0){
-            String sql2="select * from gymrat.coach where email = ?";
+        String sql="select * from gymrat.trainer where Email = ?";
+        List<Trainer> trainers=  jdbc.query(sql,new TrainerRowMapper(),email);
+        if(trainers.size() ==0){
+            String sql2="select * from gymrat.coach where Email = ?";
             List<Coach>coaches=jdbc.query(sql2,new CoachRowMapper(),email);
-            if(user.size()==0){
+            if(coaches.size()==0){
                 return null;
             }
             else return coaches.get(0);
         }
-        return user.get(0);
+        return trainers.get(0);
     }
 }

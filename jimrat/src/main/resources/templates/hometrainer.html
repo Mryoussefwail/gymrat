@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GYM RAT</title>
+    <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+</head>
+<body>
+
+<div class="hero_area">
+<header class="header_section">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="">
+            <span>
+              GYM RAT
+            </span>
+            </a>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                            <ul class="navbar-nav  ">
+                                <li class="nav-item active" >
+                                    <a class="nav-link" href="/hometrainer">Coaches </span></a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/trainergyms"> Gyms </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/profile"> Profile</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/logout"> Logout</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+        </nav>
+    </div>
+</header>
+</div>
+
+
+
+
+
+
+
+<div >
+
+
+    <section class="trainer_section layout_padding" style="">
+        <div class="container">
+            <div class="heading_container">
+                <h2>
+                    Coaches on GYM RAT
+                </h2>
+            </div>
+                    <div class="row">
+                    <div class="box" th:each="co : ${dataurl}"  >
+                        <div class="name">
+                            <h5>
+                                <span th:text="${co.coach.name}"></span>
+                            </h5>
+                        </div>
+                        <div class="img-box">
+                            <a href="coachDetailsPage.html" th:href="'/coachdetailspage?id=' + ${co.coach.id} ">
+                                <img th:src="'data:image/jpeg;base64,' + ${co.base64Image}" alt="image">
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+
+
+            </div>
+
+    </section>
+
+
+
+</div>
+</body>
+</html>
