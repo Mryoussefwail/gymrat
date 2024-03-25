@@ -45,8 +45,8 @@ public class GymRepository {
         }
     }
     public void storeGym(Gym gym){
-        String sql="insert into gymrat.gym values (null , ?, ?, ?, null)";
-        jdbc.update(sql,gym.getName(),gym.getLatitude(),gym.getLongitude());
+        String sql="insert into gymrat.gym values (null , ?, ?, ?, null,?,?,?,?)";
+        jdbc.update(sql,gym.getName(),gym.getLatitude(),gym.getLongitude(),gym.getPassword(),gym.getMonthPrice(),gym.getHalfyearPrice(),gym.getYearPrice());
     }
     public int getGymId(String name){
         String sql="select * from gymrat.gym where GymName = ?";

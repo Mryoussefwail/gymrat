@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>GYM RAT</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+
+  <style>
+ * {
+  margin: 0;
+  box-sizing: border-box;
+}
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+
+@media only screen and (min-width: 600px) {
+  .col-s-1 {width: 8.33%;}
+  .col-s-2 {width: 16.66%;}
+  .col-s-3 {width: 25%;}
+  .col-s-4 {width: 33.33%;}
+  .col-s-5 {width: 41.66%;}
+  .col-s-6 {width: 50%;}
+  .col-s-7 {width: 58.33%;}
+  .col-s-8 {width: 66.66%;}
+  .col-s-9 {width: 75%;}
+  .col-s-10 {width: 83.33%;}
+  .col-s-11 {width: 91.66%;}
+  .col-s-12 {width: 100%;}
+}
+
+@media only screen and (min-width: 768px) {
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+  .col-4 {width: 33.33%;}
+  .col-5 {width: 41.66%;}
+  .col-6 {width: 50%;}
+  .col-7 {width: 58.33%;}
+  .col-8 {width: 66.66%;}
+  .col-9 {width: 75%;}
+  .col-10 {width: 83.33%;}
+  .col-11 {width: 91.66%;}
+  .col-12 {width: 100%;}
+}
+video {
+  width: 100%;
+  height: auto;
+}
+  </style>
+</head>
+
+<body>
+
+<header class="header_section">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container ">
+      <a class="navbar-brand" href="">
+        <span>
+          GYM RAT
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+          <ul class="navbar-nav  ">
+
+            <li class="nav-item active">
+              <a class="nav-link" href="/coachreels"> reels</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/homecoach"> trainees</a>
+            </li>
+            <li class="nav-item " >
+              <a class="nav-link" href="/profilecoach"> Profile  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/logout"> Logout</a>
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="trainer_section layout_padding row" style="">
+
+  <!-- Loop through videos and display each one -->
+  <div th:each="video :${videos}" class="app_videos video">
+    <div  class="video">
+      <video controls th:if="${video.base64Image != null}" class="video_player">
+        <source th:src="${video.base64Image}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Upload button and file input -->
+  <button id="uploadButton" class="btn btn-primary btn-block col-12" >Upload Video</button>
+  <input type="file" id="fileInput" style="display: none;">
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  document.getElementById('uploadButton').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', function() {
+    var file = this.files[0];
+    var formData = new FormData();
+    formData.append('file', file);
+
+    // Send AJAX request to the controller
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/addreel', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Request was successful
+        console.log('Video uploaded successfully');
+      } else {
+        // Request failed
+        console.error('Error uploading video');
+      }
+    };
+    xhr.send(formData);
+    setTimeout(function() {
+      alert('Video uploaded successfully');
+      window.location.href = '/trainerreels';
+      console.log("Two seconds have passed!");
+    }, 1000);
+
+  });
+</script>
+</body>
+</html>

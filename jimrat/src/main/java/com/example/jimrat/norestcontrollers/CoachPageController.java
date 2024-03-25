@@ -1,11 +1,9 @@
 package com.example.jimrat.norestcontrollers;
 
-import com.example.jimrat.models.Image;
-import com.example.jimrat.models.Trainer;
-import com.example.jimrat.models.ViewTrainer;
-import com.example.jimrat.models.viewCoach;
+import com.example.jimrat.models.*;
 import com.example.jimrat.repositories.CoachRepository;
 import com.example.jimrat.repositories.ImageRepository;
+import com.example.jimrat.repositories.VideoRepository;
 import com.example.jimrat.services.LoggedUserManagmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +21,12 @@ import java.util.List;
 @Controller
 public class CoachPageController {
     private CoachRepository coachRepository;
+    private VideoRepository videoRepository;
     private ImageRepository imageRepository;
     private final LoggedUserManagmentService loggedUserManagmentService;
-    public CoachPageController(CoachRepository coachRepository,LoggedUserManagmentService loggedUserManagmentService,ImageRepository imageRepository){
+    public CoachPageController(CoachRepository coachRepository,LoggedUserManagmentService loggedUserManagmentService,ImageRepository imageRepository,VideoRepository videoRepository){
         this.coachRepository=coachRepository;
+        this.videoRepository=videoRepository;
         this.loggedUserManagmentService=loggedUserManagmentService;
         this.imageRepository=imageRepository;
     }
@@ -80,4 +80,26 @@ public class CoachPageController {
         image.setType(file.getContentType());
         imageRepository.storeImage(image, (int) loggedUserManagmentService.getId(),loggedUserManagmentService.getType());
     }
+    @GetMapping("/coachreels")
+    public String getReelsPage(Model model){
+        if(loggedUserManagmentService.getEmail()==null){
+            return "redirect:/login";
+        }
+        List<Video>videos=videoRepository.getAllVideos();
+        List<String> base64Image=new ArrayList<>();
+        List<ViewVideo>views=new ArrayList<>();
+        if (videos!=null){
+
+            for (int i=0;i<videos.size();i++)
+            {
+                String ba=Base64.getEncoder().encodeToString(videos.get(i).getImageData());
+                base64Image.add("data:video/mp4;base64,"+ba);
+                views.add(new ViewVideo(videos.get(i),base64Image.get(i)));
+            }
+            model.addAttribute("videos",views);
+        }
+
+        return "coachreels.html";
+    }
+
 }

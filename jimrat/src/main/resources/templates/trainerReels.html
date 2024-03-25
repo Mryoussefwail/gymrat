@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>GYM RAT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+
+  <style>
+ video {
+  width: 100%;
+  height: auto;
+}
+  </style>
+</head>
+
+<body >
+
+<header class="header_section">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container ">
+      <a class="navbar-brand" href="">
+        <span>
+          GYM RAT
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+          <ul class="navbar-nav  ">
+            <li class="nav-item ">
+              <a class="nav-link" href="/hometrainer">Coaches</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/trainergyms"> Gyms  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/trainerreels"> reels</a>
+            </li>
+
+            <li class="nav-item " >
+              <a class="nav-link" href="/profile"> Profile  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/logout"> Logout</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="trainer_section layout_padding row" >
+
+  <!-- Loop through videos and display each one -->
+  <div th:each="video :${videos}" class="app-videos video" >
+    <div class="video">
+      <video controls th:if="${video.base64Image != null}">
+        <source th:src="${video.base64Image}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Upload button and file input -->
+  <button id="uploadButton" class="btn btn-primary btn-block" >Upload Video</button>
+  <input type="file" id="fileInput" style="display: none;">
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  document.getElementById('uploadButton').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', function() {
+    var file = this.files[0];
+    var formData = new FormData();
+    formData.append('file', file);
+
+    // Send AJAX request to the controller
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/addreel', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Request was successful
+        console.log('Video uploaded successfully');
+      } else {
+        // Request failed
+        console.error('Error uploading video');
+      }
+    };
+    xhr.send(formData);
+    setTimeout(function() {
+      alert('Video uploaded successfully');
+      window.location.href = '/trainerreels';
+      console.log("Two seconds have passed!");
+    }, 1000);
+
+  });
+</script>
+</body>
+</html>

@@ -18,6 +18,10 @@ public class GymRowMapper implements RowMapper {
         gym.setLatitude(rs.getDouble("Latitude"));
         gym.setLongitude(rs.getDouble("Longitude"));
         gym.setImageId(rs.getInt("ImageID"));
+        gym.setPassword(rs.getString("password"));
+        gym.setMonthPrice(rs.getDouble("monthPrice"));
+        gym.setHalfyearPrice(rs.getDouble("halfyearPrice"));
+        gym.setYearPrice(rs.getDouble("yearPrice"));
         return gym;
     }
 }

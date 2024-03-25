@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>GYM RAT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="./css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+</head>
+
+<body >
+
+<header class="header_section" >
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container ">
+      <a class="navbar-brand" href="">
+            <span>
+              GYM RAT
+            </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+          <ul class="navbar-nav  ">
+            <li class="nav-item ">
+              <a class="nav-link" href="/#">Coaches</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/gymsubstrainees"> Trainees  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/#"> reels</a>
+            </li>
+
+            <li class="nav-item active" >
+              <a class="nav-link" href="/gymprofile"> Profile  </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/logout"> Logout</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="trainer_section layout_padding" >
+  <div class="heading_container">
+    <h2>
+      <span th:text="${User.name}"></span>
+    </h2>
+  </div>
+
+
+  <div class="heading_container">
+    <div class="img-box">
+      <img th:src="'data:image/jpeg;base64,' + ${dataurl}" alt="image">
+    </div>
+  </div>
+
+  <button id="uploadButton" class="btn btn-primary btn-block " >Upload Image</button>
+  <input type="file" id="fileInput" style="display:none;">
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+
+  document.getElementById('uploadButton').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+});
+
+document.getElementById('fileInput').addEventListener('change', function() {
+    var file = this.files[0];
+    var formData = new FormData();
+    formData.append('file', file);
+
+    // Send AJAX request to the controller
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/gymprofile', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Request was successful
+            console.log('Image uploaded successfully');
+        } else {
+            // Request failed
+            console.error('Error uploading image');
+        }
+    };
+    xhr.send(formData);
+    setTimeout(function() {
+    alert('Image uploaded successfully');
+    window.location.href = '/gymprofile';
+    console.log("Two seconds have passed!");
+}, 1000);
+
+});
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.example.jimrat.controllers;
 
+import com.example.jimrat.models.Gym;
 import com.example.jimrat.models.User;
 import com.example.jimrat.repositories.LoginRepository;
 import com.example.jimrat.repositories.UserRepository;
@@ -67,7 +68,18 @@ public class LoginController {
             }
         }
         else {
-            return "redirect:/login";
+            Gym gym=loginRepository.loginGym(email,password);
+            if (gym==null){
+
+                return "redirect:/login";
+            }
+            else {
+                loggedUserManagmentService.setEmail(gym.getName());
+                loggedUserManagmentService.setName(gym.getName());
+                loggedUserManagmentService.setId(gym.getId());
+                loggedUserManagmentService.setType("gym");
+                return "redirect:/gymprofile";
+            }
         }
     }
     @GetMapping("/logout")

@@ -1,16 +1,17 @@
 package com.example.jimrat.norestcontrollers;
 
 import com.example.jimrat.models.*;
-import com.example.jimrat.repositories.CoachRepository;
-import com.example.jimrat.repositories.GymRepository;
-import com.example.jimrat.repositories.ImageRepository;
-import com.example.jimrat.repositories.TrainerRepository;
+import com.example.jimrat.repositories.*;
 import com.example.jimrat.services.LoggedUserManagmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -23,12 +24,14 @@ public class TrainerPageController {
     private TrainerRepository trainerRepository;
     private CoachRepository coachRepository;
     private GymRepository gymRepository;
-    public TrainerPageController (TrainerRepository trainerRepository,GymRepository gymRepository,CoachRepository coachRepository,ImageRepository imageRepository,LoggedUserManagmentService loggedUserManagmentService){
+    private VideoRepository videoRepository;
+    public TrainerPageController (TrainerRepository trainerRepository,GymRepository gymRepository,CoachRepository coachRepository,ImageRepository imageRepository,LoggedUserManagmentService loggedUserManagmentService,VideoRepository videoRepository){
         this.imageRepository=imageRepository;
         this.coachRepository=coachRepository;
         this.trainerRepository=trainerRepository;
         this.gymRepository=gymRepository;
         this.loggedUserManagmentService=loggedUserManagmentService;
+        this.videoRepository=videoRepository;
     }
     @GetMapping("/hometrainer")
     public String getTrainerPage(Model model){
@@ -106,7 +109,7 @@ public class TrainerPageController {
         Image image=trainerRepository.getProfileImage();
         if (image!=null){
 
-            String base64Image=Base64.getEncoder().encodeToString(image.getImageData());
+            String base64Image= Base64.getEncoder().encodeToString(image.getImageData());
             model.addAttribute("dataurl",base64Image);
         }
         Coach coach=trainerRepository.getSubscripedCoach((int) loggedUserManagmentService.getId());
@@ -115,6 +118,29 @@ public class TrainerPageController {
         }
         return "profile.html";
     }
+    @GetMapping("/trainerreels")
+    public String getReelsPage(Model model){
+        if(loggedUserManagmentService.getEmail()==null){
+            return "redirect:/login";
+        }
+        List<Video>videos=videoRepository.getAllVideos();
+        List<String> base64Image=new ArrayList<>();
+        List<ViewVideo>views=new ArrayList<>();
+        if (videos!=null){
+
+            for (int i=0;i<videos.size();i++)
+            {
+                String ba=Base64.getEncoder().encodeToString(videos.get(i).getImageData());
+                base64Image.add("data:video/mp4;base64,"+ba);
+                views.add(new ViewVideo(videos.get(i),base64Image.get(i)));
+            }
+            model.addAttribute("videos",views);
+        }
+
+        return "trainerReels.html";
+    }
+
+
     @GetMapping("/coachdetailspage")
     public String getCoachDetails(@RequestParam int id,Model model){
         if (loggedUserManagmentService.getEmail()==null){
@@ -133,5 +159,18 @@ public class TrainerPageController {
             model.addAttribute("gym",gym);
         }
         return "coachDetailsPage.html";
+    }
+    @PostMapping("/addreel")
+    public void addReelToVideo(@RequestBody MultipartFile file) throws IOException {
+        System.out.println("in add video");
+        Video video=new Video();
+        video.setId(0L);
+        video.setName(file.getName());
+        video.setFilePath(file.getOriginalFilename());
+        video.setImageData(file.getBytes());
+        video.setType(file.getContentType());
+        video.setUsertype(loggedUserManagmentService.getType());
+        video.setUserid(loggedUserManagmentService.getId());
+        videoRepository.addVideo(video);
     }
 }
